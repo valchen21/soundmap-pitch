@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Soundmap — Creator Strategy</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #07090f;
+      --card: #0f1520;
+      --border: rgba(255,255,255,0.07);
+      --accent: #f97316;
+      --blue: #3b82f6;
+      --green: #10b981;
+      --purple: #8b5cf6;
+      --pink: #ec4899;
+      --yellow: #f59e0b;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --soft: #94a3b8;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    }
+
+    /* DECK */
+    .deck {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* SLIDE */
+    .slide {
+      display: none;
+      width: 100%;
+      height: 100%;
+      padding: 48px 56px;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    .slide.active { display: flex; }
+
+    /* ACCENT BAR */
+    .slide::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: var(--accent);
+      border-radius: 0 4px 4px 0;
+    }
+
+    .slide[data-color="blue"]::before   { background: var(--blue); }
+    .slide[data-color="green"]::before  { background: var(--green); }
+    .slide[data-color="purple"]::before { background: var(--purple); }
+    .slide[data-color="pink"]::before   { background: var(--pink); }
+    .slide[data-color="yellow"]::before { background: var(--yellow); }
+
+    /* EYEBROW */
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .slide[data-color="blue"]   .eyebrow { color: var(--blue); }
+    .slide[data-color="green"]  .eyebrow { color: var(--green); }
+    .slide[data-color="purple"] .eyebrow { color: var(--purple); }
+    .slide[data-color="pink"]   .eyebrow { color: var(--pink); }
+    .slide[data-color="yellow"] .eyebrow { color: var(--yellow); }
+
+    /* HEADING */
+    .slide h1 {
+      font-size: clamp(26px, 4vw, 44px);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 10px;
+      max-width: 700px;
+    }
+
+    .slide h2 {
+      font-size: clamp(20px, 3vw, 32px);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 10px;
+      max-width: 700px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: var(--soft);
+      margin-bottom: 40px;
+      max-width: 560px;
+      line-height: 1.5;
+    }
+
+    /* GRID OF CARDS */
+    .cards {
+      display: grid;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .cards.col2 { grid-template-columns: 1fr 1fr; }
+    .cards.col3 { grid-template-columns: 1fr 1fr 1fr; }
+    .cards.col4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+    }
+
+    .card-num {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .card-body {
+      font-size: 13px;
+      color: var(--soft);
+      line-height: 1.55;
+    }
+
+    /* SIMPLE LIST */
+    .point-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .point {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .point-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+
+    .slide[data-color="blue"]   .point-dot { background: var(--blue); }
+    .slide[data-color="green"]  .point-dot { background: var(--green); }
+    .slide[data-color="purple"] .point-dot { background: var(--purple); }
+    .slide[data-color="pink"]   .point-dot { background: var(--pink); }
+    .slide[data-color="yellow"] .point-dot { background: var(--yellow); }
+
+    .point-text {
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--text);
+    }
+
+    .point-text strong {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .point-sub {
+      font-size: 13px;
+      color: var(--soft);
+      margin-top: 2px;
+      line-height: 1.5;
+    }
+
+    /* SPLIT */
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .split-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 22px;
+    }
+
+    .split-card h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: var(--text);
+    }
+
+    .split-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .split-card ul li {
+      font-size: 13px;
+      color: var(--soft);
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.45;
+    }
+
+    .split-card ul li::before {
+      content: "–";
+      position: absolute;
+      left: 0;
+      color: var(--muted);
+    }
+
+    /* CALLOUT */
+    .callout {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 12px;
+      padding: 18px 22px;
+      font-size: 15px;
+      color: var(--soft);
+      line-height: 1.6;
+      margin-top: 20px;
+    }
+
+    .slide[data-color="blue"]   .callout { border-left-color: var(--blue); }
+    .slide[data-color="green"]  .callout { border-left-color: var(--green); }
+    .slide[data-color="purple"] .callout { border-left-color: var(--purple); }
+    .slide[data-color="pink"]   .callout { border-left-color: var(--pink); }
+    .slide[data-color="yellow"] .callout { border-left-color: var(--yellow); }
+
+    .callout strong { color: var(--text); }
+
+    /* TAG ROW */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 32px;
+    }
+
+    .tag {
+      background: rgba(249,115,22,0.1);
+      border: 1px solid rgba(249,115,22,0.2);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 13px;
+      border-radius: 999px;
+    }
+
+    /* NAV */
+    .nav {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(15,21,32,0.9);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 20px;
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: var(--soft);
+      cursor: pointer;
+      font-size: 18px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      transition: color .15s, background .15s;
+      line-height: 1;
+    }
+
+    .nav-btn:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+    .nav-btn:disabled { color: var(--muted); cursor: default; background: none; }
+
+    .nav-counter {
+      font-size: 12px;
+      color: var(--muted);
+      min-width: 52px;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* PROGRESS */
+    .progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width .25s ease, background .25s;
+      z-index: 200;
+    }
+
+    /* TITLE SLIDE SPECIAL */
+    .slide.title-slide h1 {
+      font-size: clamp(32px, 5vw, 58px);
+      margin-bottom: 16px;
+    }
+
+    .slide.title-slide .subtitle {
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress" id="progress"></div>
+
+  <div class="deck" id="deck">
+
+    <!-- SLIDE 0: TITLE -->
+    <div class="slide title-slide active">
+      <div class="eyebrow">Creator & Content Strategy</div>
+      <h1>Soundmap</h1>
+      <p class="subtitle">A framework for sourcing, managing, and scaling UGC creator content — built around music, location, and community.</p>
+      <div class="tags">
+        <div class="tag">3 Sourcing Channels</div>
+        <div class="tag">5 Creator Criteria</div>
+        <div class="tag">1 Team System</div>
+        <div class="tag">7 Video Concepts</div>
+        <div class="tag">3 TikTok Trends</div>
+        <div class="tag">TikTok vs IG</div>
+        <div class="tag">3 Competitor Examples</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 1: SOURCING -->
+    <div class="slide" data-color="orange">
+      <div class="eyebrow">01 — Creator Sourcing</div>
+      <h2>Where to find the right creators</div>
+      <p class="subtitle">Focus on 3–4 channels that already map onto Soundmap's core behavior.</p>
+      <div class="cards col2">
+        <div class="card">
+          <div class="card-num">Channel 01</div>
+          <div class="card-title">Music Discovery Creators on TikTok</div>
+          <div class="card-body">Already posting "songs you need to hear" content. Right audience, right behavior — easy to brief and highly relevant.</div>
+        </div>
+        <div class="card">
+          <div class="card-num">Channel 02</div>
+          <div class="card-title">College Creators</div>
+          <div class="card-body">Soundmap is location-based. College communities are tight-knit and campus-centric — perfect fit for local music discovery.</div>
+        </div>
+        <div class="card">
+          <div class="card-num">Channel 03</div>
+          <div class="card-title">Street Interview Format Creators</div>
+          <div class="card-body">"What are you listening to?" creators. High comment rates, naturally invite participation. Format maps directly onto Soundmap's social layer.</div>
+        </div>
+        <div class="card">
+          <div class="card-num">Channel 04</div>
+          <div class="card-title">Music Meme & "Put Me On" Pages</div>
+          <div class="card-body">Communities already asking for recommendations and debating music taste. Soundmap is the destination — CTA writes itself.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: CRITERIA -->
+    <div class="slide" data-color="orange">
+      <div class="eyebrow">02 — Creator Criteria</div>
+      <h2>What makes a good Soundmap creator</h2>
+      <p class="subtitle">Follower count is secondary. Content style is everything.</p>
+      <div class="point-list">
+        <div class="point">
+          <div class="point-dot"></div>
+          <div class="point-text">
+            <strong>Comfortable talking about music on camera</strong>
+            <span class="point-sub">Can speak naturally about songs and vibes without a script feeling forced.</span>
+          </div>
+        </div>
+        <div class="point">
+          <div class="point-dot"></div>
+          <div class="point-text">
+            <strong>High comment-to-view ratio</strong>
+            <span class="point-sub">Comments signal debate, tagging, participation — exactly what Soundmap needs.</span>
+          </div>
+        </div>
+        <div class="point">
+          <div class="point-dot"></div>
+          <div class="point-text">
+            <strong>Already makes interactive or opinion-based content</strong>
+            <span class="point-sub">Polls, rankings, "would you rather" formats. Their audience already knows how to participate.</span>
+          </div>
+        </div>
+        <div class="point">
+          <div class="point-dot"></div>
+          <div class="point-text">
+            <strong>Posts consistently</strong>
+            <span class="point-sub">Reliability matters more than viral potential. You need steady output, not one big post.</span>
+          </div>
+        </div>
+        <div class="point">
+          <div class="point-dot"></div>
+          <div class="point-text">
+            <strong>Gen Z / music-fan audience — 10k to 200k followers</strong>
+            <span class="point-sub">Sweet spot for UGC authenticity. Big enough to matter, small enough to feel real.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: MANAGING TEAM -->
+    <div class="slide" data-color="blue">
+      <div class="eyebrow">03 — Team Management</div>
+      <h2>Running a UGC creator system</h2>
+      <p class="subtitle">Simple structure. Give creators themes, not scripts — so content stays native to their voice.</p>
+      <div class="cards col2">
+        <div class="card">
+          <div class="card-num">Tool 01</div>
+          <div class="card-title">Slack / Discord Creator Hub</div>
+          <div class="card-body">Central space for briefs, feedback, and inspiration clips. Keeps everyone aligned without email chaos.</div>
+        </div>
+        <div class="card">
+          <div class="card-num">Tool 02</div>
+          <div class="card-title">Weekly Prompt List</div>
+          <div class="card-body">3–5 themes each week. Creators pick the one that fits their voice. A theme feels native. A script feels like an ad.</div>
+        </div>
+        <div class="card">
+          <div class="card-num">Tool 03</div>
+          <div class="card-title">Shared Idea Bank</div>
+          <div class="card-body">Creators can drop ideas and claim prompts. Builds ownership and keeps content feeling genuine.</div>
+        </div>
+        <div class="card">
+          <div class="card-num">Tool 04</div>
+          <div class="card-title">Content Leaderboard</div>
+          <div class="card-body">Track views, comments, and installs per creator. Top performers get more budget and early feature access.</div>
+        </div>
+      </div>
+      <div class="callout">
+        Example weekly prompts: &nbsp;<strong>"Songs you'd fight someone over"</strong> &nbsp;·&nbsp; <strong>"Songs only your hometown knows"</strong> &nbsp;·&nbsp; <strong>"Songs you gatekeep"</strong>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: VIDEO CONCEPTS (part 1) -->
+    <div class="slide" data-color="green">
+      <div class="eyebrow">04 — Content Formats</div>
+      <h2>Video concepts — Part 1</h2>
+      <p class="subtitle">Every concept is a conversation starter. They drive comments, tags, and debates — that's how music content spreads.</p>
+      <div class="cards col3">
+        <div class="card">
+          <div class="card-num">Concept 01</div>
+          <div class="card-title">"What are you listening to?" — but drop it on Soundmap</div>
+          <div class="card-body">Street interview format. Instead of just naming the song, pull up the app. Shows the product live, feels organic.</div>
+        </div>
+        <div class="card">
+          <div class="card-num">Concept 02</div>
+          <div class="card-title">Guess the song from the first second</div>
+          <div class="card-body">High-comment format. People will fight in the comments. Works perfectly as a Soundmap challenge.</div>
+        </div>
+        <div class="card">
+          <div class="card-num">Concept 03</div>
+          <div class="card-title">Songs that would start a fight in the group chat</div>
+          <div class="card-body">Debate-bait. Drives tags and shares. "Drop yours on Soundmap" as the CTA.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: VIDEO CONCEPTS (part 2) -->
+    <div class="slide" data-color="green">
+      <div class="eyebrow">04 — Content Formats</div>
+      <h2>Video concepts — Part 2</h2>
+      <p class="subtitle">Location-native and identity-driven formats that make Soundmap's core value prop visible.</p>
+      <div class="cards col2">
+        <div class="card">
+          <div class="card-num">Concept 04</div>
+          <div class="card-title">Rate my Soundmap collection</div>
+          <div class="card-body">UGC loop — creator shows their map, asks followers to rate. Incentivizes people to build their own.</div>
+        </div>
+        <div class="card">
+          <div class="card-num">Concept 05</div>
+          <div class="card-title">Songs people pretend to like</div>
+          <div class="card-body">Hot take format. High shareability. Audience immediately thinks of someone to tag.</div>
+        </div>
+        <div class="card">
+          <div class="card-num">Concept 06</div>
+          <div class="card-title">Songs that hit different depending on where you are</div>
+          <div class="card-body">Directly ties to Soundmap's location angle. "The song only sounds right when you're in [city]."</div>
+        </div>
+        <div class="card">
+          <div class="card-num">Concept 07</div>
+          <div class="card-title">Put me on to a song only your city knows</div>
+          <div class="card-body">Community sourced. Pulls in local pride and discovery — Soundmap's core value prop in one prompt.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: TIKTOK TRENDS -->
+    <div class="slide" data-color="purple">
+      <div class="eyebrow">05 — TikTok Trends</div>
+      <h2>Trends applicable to Soundmap</h2>
+      <p class="subtitle">Music apps thrive on opinion content. These formats are already working — Soundmap fits naturally inside them.</p>
+      <div class="point-list">
+        <div class="point">
+          <div class="point-dot"></div>
+          <div class="point-text">
+            <strong>"Put me onto…" Trend</strong>
+            <span class="point-sub">Creators ask followers to recommend songs in comments. Massive discovery format. Soundmap is literally the app for this — the CTA writes itself.</span>
+          </div>
+        </div>
+        <div class="point">
+          <div class="point-dot"></div>
+          <div class="point-text">
+            <strong>POV Music Taste Videos</strong>
+            <span class="point-sub">"POV: you have impeccable music taste." Highly shareable identity content. Soundmap lets people show their taste visually through their collection.</span>
+          </div>
+        </div>
+        <div class="point">
+          <div class="point-dot"></div>
+          <div class="point-text">
+            <strong>Hot Take Format</strong>
+            <span class="point-sub">"Your favorite artist only has 3 good songs." People can't scroll past a wrong opinion. Music apps thrive here.</span>
+          </div>
+        </div>
+      </div>
+      <div class="callout">
+        Also trending: blind song ranking · "songs that never miss" · location-based music content ("sounds that define a city") — all map directly onto Soundmap's features.
+      </div>
+    </div>
+
+    <!-- SLIDE 7: TIKTOK VS IG -->
+    <div class="slide" data-color="pink">
+      <div class="eyebrow">06 — Platform Strategy</div>
+      <h2>TikTok vs Instagram</h2>
+      <p class="subtitle">TikTok is where you find new audiences. Instagram is where you keep them.</p>
+      <div class="split">
+        <div class="split-card">
+          <h4>TikTok — Discovery Engine</h4>
+          <ul>
+            <li>Trends and sound-based hooks</li>
+            <li>Street interviews and hot takes</li>
+            <li>Opinion content that sparks debate</li>
+            <li>Unfiltered, creator-native delivery</li>
+            <li>CTA: "Drop your song on Soundmap"</li>
+          </ul>
+        </div>
+        <div class="split-card">
+          <h4>Instagram — Community Engine</h4>
+          <ul>
+            <li>Best TikToks reposted as Reels</li>
+            <li>Carousel music debates (swipe format)</li>
+            <li>Stories for polls and direct CTAs</li>
+            <li>Creator reposts and DM-able content</li>
+            <li>Slightly more produced content is fine here</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout">
+        <strong>One-line POV:</strong> Run discovery on TikTok. Run retention and community on Instagram. Don't treat them the same.
+      </div>
+    </div>
+
+    <!-- SLIDE 8: COMPETITORS -->
+    <div class="slide" data-color="yellow">
+      <div class="eyebrow">07 — Competitive Inspiration</div>
+      <h2>Apps doing organic content well</h2>
+      <p class="subtitle">Shows you understand platform-native growth — not just how to run ads.</p>
+      <div class="point-list">
+        <div class="point">
+          <div class="point-dot"></div>
+          <div class="point-text">
+            <strong>Duolingo — Personality-Driven Content</strong>
+            <span class="point-sub">Mascot has a voice, takes hot takes, responds to pop culture. Lesson: give your content a personality, not just a feature. People follow characters, not apps.</span>
+          </div>
+        </div>
+        <div class="point">
+          <div class="point-dot"></div>
+          <div class="point-text">
+            <strong>BeReal — Community Participation</strong>
+            <span class="point-sub">Made the community the content. No influencers needed — just your friends being real. Lesson: design content so users naturally become the creators.</span>
+          </div>
+        </div>
+        <div class="point">
+          <div class="point-dot"></div>
+          <div class="point-text">
+            <strong>Spotify — Culture & Music Commentary</strong>
+            <span class="point-sub">Wrapped became a cultural moment. Lesson: make the data personal and shareable. Soundmap can do this with location data and music history.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: SUMMARY -->
+    <div class="slide">
+      <div class="eyebrow">Summary</div>
+      <h2>What's on the table</h2>
+      <p class="subtitle">Full creator strategy ready to execute from day one.</p>
+      <div class="cards col3">
+        <div class="card">
+          <div class="card-title">Sourcing</div>
+          <div class="card-body">3 targeted channels: music discovery TikTok, college creators, street interview format, and music meme pages.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Criteria</div>
+          <div class="card-body">Style over follower count. Comment rate, consistency, music fluency, Gen Z audience. 10k–200k sweet spot.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Team System</div>
+          <div class="card-body">Creator hub, weekly prompts, idea bank, leaderboard. Themes not scripts — keeps content native.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Content</div>
+          <div class="card-body">7 conversation-starter formats built around music opinion, location, and discovery.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Trends</div>
+          <div class="card-body">"Put me onto" · POV music taste · hot takes · blind ranking. All platform-native and directly applicable.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Platform POV</div>
+          <div class="card-body">TikTok for discovery. Instagram for community. Duolingo, BeReal, and Spotify as the playbook.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- NAV -->
+  <div class="nav">
+    <button class="nav-btn" id="prev">←</button>
+    <div class="nav-counter" id="counter">1 / 10</div>
+    <button class="nav-btn" id="next">→</button>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const counter = document.getElementById('counter');
+    const progress = document.getElementById('progress');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    let current = 0;
+
+    const colors = {
+      orange: '#f97316',
+      blue:   '#3b82f6',
+      green:  '#10b981',
+      purple: '#8b5cf6',
+      pink:   '#ec4899',
+      yellow: '#f59e0b',
+    };
+
+    function go(n) {
+      slides[current].classList.remove('active');
+      current = Math.max(0, Math.min(slides.length - 1, n));
+      slides[current].classList.add('active');
+
+      counter.textContent = `${current + 1} / ${slides.length}`;
+      prevBtn.disabled = current === 0;
+      nextBtn.disabled = current === slides.length - 1;
+
+      const pct = (current / (slides.length - 1)) * 100;
+      progress.style.width = pct + '%';
+
+      const col = slides[current].dataset.color;
+      progress.style.background = colors[col] || '#f97316';
+    }
+
+    prevBtn.addEventListener('click', () => go(current - 1));
+    nextBtn.addEventListener('click', () => go(current + 1));
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(current + 1);
+      if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   go(current - 1);
+    });
+
+    go(0);
+  </script>
+</body>
+</html>

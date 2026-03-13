@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Soundmap — Deliverable Prototype</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial;margin:0;background:#0f1724;color:#e6eef8}
+    .wrap{max-width:900px;margin:24px auto;padding:12px}
+    h1{margin:6px 0 18px;font-size:20px}
+    .cards{display:flex;flex-direction:column;gap:12px;max-height:75vh;overflow:auto;padding-right:6px}
+    .card{background:linear-gradient(180deg,#111827 0%, #0b1220 100%);border:1px solid rgba(255,255,255,0.04);padding:12px;border-radius:10px;cursor:pointer;transition:box-shadow .18s}
+    .card:hover{box-shadow:0 6px 18px rgba(2,6,23,0.6)}
+    .card .head{display:flex;justify-content:space-between;align-items:center}
+    .title{font-weight:700}
+    .meta{font-size:12px;color:#9fb0cc}
+    .body{margin-top:8px;color:#cfe7ff;font-size:14px;line-height:1.35;max-height:0;overflow:hidden;transition:max-height .28s ease,padding .18s}
+    .card.expanded .body{max-height:1200px;padding-top:8px}
+    .badge{background:#1f6feb;color:white;padding:4px 8px;border-radius:999px;font-size:12px}
+    ul{margin:6px 0 0 18px}
+    pre{background:#061124;padding:10px;border-radius:6px;overflow:auto;color:#dbeafe}
+    .small{font-size:13px;color:#93b0cc}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Soundmap — Deliverable Prototype</h1>
+    <div class="cards">
+
+      <div class="card" data-title="Format: Moments Reveal">
+        <div class="head">
+          <div>
+            <div class="title">Format: "Moments Reveal"</div>
+            <div class="meta">Hook: viral clip → zoom out → app collectible reveal</div>
+          </div>
+          <div class="badge">Core</div>
+        </div>
+        <div class="body">
+          <p>Start with a widely-recognized viral clip. Then reveal it’s a Moment inside Soundmap — someone collected or traded it. Reaction is collectible-native, not an ad.</p>
+          <strong>Why it works</strong>
+          <ul>
+            <li>Hook relies on cultural recognition, not a pitch.</li>
+            <li>Native app reveal feels organic.</li>
+            <li>Format is infinitely reusable across clips.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" data-title="Series Variations">
+        <div class="head">
+          <div>
+            <div class="title">Three Reusable Variations</div>
+            <div class="meta">Tag: reusable scripts</div>
+          </div>
+          <div class="badge">Series</div>
+        </div>
+        <div class="body">
+          <ul>
+            <li><strong>Rare Moment Pull</strong> — reacting to unlocking a rare Moment via trade.</li>
+            <li><strong>I Traded for This</strong> — show what you gave up and debate value.</li>
+            <li><strong>This Moment Just Dropped</strong> — race to collect a clip that just went viral.</li>
+          </ul>
+          <strong>Sample reusable scripts (short)</strong>
+          <pre>— "I can't believe someone traded me this."  (Reusable)
+— "This might be the rarest moment on my map."  (Reusable)
+— "Everyone's trying to trade for this right now."  (Reusable)</pre>
+        </div>
+      </div>
+
+      <div class="card" data-title="Potential Scripts">
+        <div class="head">
+          <div>
+            <div class="title">Potential Scripts (expandable clips)</div>
+            <div class="meta">Marked: reusable</div>
+          </div>
+          <div class="badge">Scripts</div>
+        </div>
+        <div class="body">
+          <strong>Rare Moment Pull — Script:</strong>
+          <ul>
+            <li>Hook: Show the viral clip for 2s. Reaction: "Wait — that's mine?"</li>
+            <li>Reveal: Zoom out to Soundmap showing the trade unlock.</li>
+            <li>Closer: "I can't believe someone traded me this." (Reusable)</li>
+          </ul>
+          <strong>I Traded for This — Script:</strong>
+          <ul>
+            <li>Hook: Show what you traded away quickly.</li>
+            <li>Reveal: Show incoming clip; creator reacts debating value.</li>
+            <li>Closer: "Worth it? You decide." (Reusable)</li>
+          </ul>
+          <strong>This Moment Just Dropped — Script:</strong>
+          <ul>
+            <li>Hook: Breaking viral clip teaser.</li>
+            <li>Reveal: Live collect/notification on Soundmap; creator races.</li>
+            <li>Closer: "Just collected — who has it?" (Reusable)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" data-title="Sourcing Creators">
+        <div class="head">
+          <div>
+            <div class="title">Sourcing Creators & Criteria</div>
+            <div class="meta">Practical approach</div>
+          </div>
+          <div class="badge">Acquisition</div>
+        </div>
+        <div class="body">
+          <ul>
+            <li>Start with micro + mid-tier creators (10k–200k). High engagement beats follower count.</li>
+            <li>Search signals: high watch-through, frequent reactions, niche cultural verticals (sound, clips, nostalgia).</li>
+            <li>Criteria: fast turnarounds, consistent style, willingness to reuse template scripts, clear rights/UGC terms.</li>
+            <li>Outreach: brief creative brief + one paid test piece, then scale top performers into content pods.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" data-title="Managing UGC Team">
+        <div class="head">
+          <div>
+            <div class="title">Managing a Team of UGC Creators</div>
+            <div class="meta">Structure + ops</div>
+          </div>
+          <div class="badge">Ops</div>
+        </div>
+        <div class="body">
+          <ul>
+            <li>Organize creators into pods (by vertical). Assign briefs and KPI windows (views, collect rate, trade mentions).</li>
+            <li>Provide templates: 3–5 short scripts + B-roll examples; clear deliverable checklist.</li>
+            <li>Weekly reviews: highlight top clips for reuse and rapid iteration.</li>
+            <li>Comp structure: pay per accepted post + performance bonus for high collect/engagement.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" data-title="Platform Notes">
+        <div class="head">
+          <div>
+            <div class="title">TikTok vs IG & Other Apps</div>
+            <div class="meta">Channel strategy</div>
+          </div>
+          <div class="badge">Channels</div>
+        </div>
+        <div class="body">
+          <strong>TikTok</strong>
+          <ul>
+            <li>Short, punchy hooks; vertical native reactions; trends + sound usage are critical.</li>
+            <li>Favor unfiltered, authentic reactions and quick call-to-action: "Collect on Soundmap."</li>
+          </ul>
+          <strong>Instagram</strong>
+          <ul>
+            <li>Use Reels for short-form; carousels for deeper storytelling (e.g., trade thread), and Stories for CTAs and links.</li>
+            <li>IG tolerates slightly more produced content; use captions to add context about the trade/story.</li>
+          </ul>
+          <strong>Other apps (X, Facebook, YouTube Shorts)</strong>
+          <ul>
+            <li>Repurpose highest-performing clips; adapt captions and CTAs per platform norms.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" data-title="What To Prepare">
+        <div class="head">
+          <div>
+            <div class="title">What To Prepare for the Meeting</div>
+            <div class="meta">You had ~4 days — here's a minimal pack</div>
+          </div>
+          <div class="badge">Prep</div>
+        </div>
+        <div class="body">
+          <ul>
+            <li>5–8 example clips (viral or candidate Moments) to demo the format live.</li>
+            <li>2 ready scripts per series variation (reusable tags included).</li>
+            <li>Short list of 8–12 creators (with handles & metrics) to propose outreach.</li>
+            <li>One example trade flow or mockup of a successful post (screenshots or short video).</li>
+            <li>Top-line KPIs to track: views, collect rate, trade mentions, installs from clip.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+    <p class="small">Click any card to expand/collapse. Use these as talking cards in your pitch; copy scripts marked (Reusable) into creator briefs.</p>
+  </div>
+
+  <script>
+    document.querySelectorAll('.card').forEach(card=>{
+      card.addEventListener('click',()=>card.classList.toggle('expanded'))
+    })
+  </script>
+</body>
+</html>

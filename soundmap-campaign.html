@@ -1,0 +1,1148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Soundmap - 7-Day Drop Campaign</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #000000;
+      --surface:  #080808;
+      --surface2: #0d0d0d;
+      --border:   rgba(255,255,255,0.08);
+      --cyan:     #00e5ff;
+      --green:    #00ff6a;
+      --magenta:  #ff00ff;
+      --purple:   #bf5fff;
+      --white:    #ffffff;
+      --text:     #e8e8e8;
+      --muted:    #555;
+      --soft:     #999;
+    }
+
+    /* ── RETRO GRID BACKGROUND ── */
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+      background: #000;
+      color: var(--text);
+      min-height: 100vh;
+      padding: 48px 24px 120px;
+      line-height: 1.6;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 45vh;
+      background:
+        linear-gradient(rgba(0,255,106,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,106,0.06) 1px, transparent 1px);
+      background-size: 48px 48px;
+      transform: perspective(400px) rotateX(55deg);
+      transform-origin: bottom center;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 30vh;
+      background: linear-gradient(to top, rgba(0,255,106,0.12) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .doc {
+      max-width: 740px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── PIXEL FONT HELPER ── */
+    .px { font-family: 'Press Start 2P', monospace; }
+
+    /* ── TOP LABEL ── */
+    .label {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      letter-spacing: .1em;
+      color: var(--cyan);
+      margin-bottom: 18px;
+      text-shadow: 0 0 12px var(--cyan);
+    }
+
+    /* ── TITLE ── */
+    .doc-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(18px, 4vw, 30px);
+      line-height: 1.4;
+      margin-bottom: 14px;
+      color: #fff;
+      text-shadow:
+        2px 2px 0 var(--cyan),
+        -1px -1px 0 var(--magenta),
+        0 0 30px rgba(0,229,255,0.4);
+    }
+
+    .doc-sub {
+      font-size: 14px;
+      color: var(--soft);
+      margin-bottom: 48px;
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    /* ── HERO CALLOUT ── */
+    .hero-callout {
+      position: relative;
+      background: var(--surface);
+      border-radius: 4px;
+      padding: 28px;
+      margin-bottom: 32px;
+      overflow: hidden;
+    }
+
+    .hero-callout::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 4px;
+      padding: 1.5px;
+      background: linear-gradient(135deg, var(--cyan), var(--magenta), var(--green), var(--purple), var(--cyan));
+      background-size: 300% 300%;
+      animation: holo 4s linear infinite;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    @keyframes holo {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .hc-label {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      color: var(--green);
+      text-shadow: 0 0 8px var(--green);
+      margin-bottom: 14px;
+      letter-spacing: .08em;
+    }
+
+    .hero-callout h2 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(11px, 2vw, 15px);
+      line-height: 1.6;
+      margin-bottom: 16px;
+      color: #fff;
+      text-shadow: 0 0 20px rgba(0,229,255,0.5);
+    }
+
+    .hero-callout p {
+      font-size: 13px;
+      color: var(--soft);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .hero-callout p:last-of-type { margin-bottom: 0; }
+    .hero-callout strong { color: var(--white); }
+
+    .hc-examples {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .hc-pill {
+      background: transparent;
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      padding: 6px 12px;
+      border-radius: 2px;
+      text-shadow: 0 0 6px var(--cyan);
+      box-shadow: 0 0 8px rgba(0,229,255,0.15), inset 0 0 8px rgba(0,229,255,0.05);
+    }
+
+    /* ── COLLAPSIBLE SECTIONS ── */
+    .section {
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 4px;
+      margin-bottom: 10px;
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .section-toggle {
+      width: 100%;
+      background: var(--surface);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 22px;
+      text-align: left;
+      transition: background .15s;
+      color: var(--text);
+    }
+
+    .section-toggle:hover { background: var(--surface2); }
+
+    .section-num {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+      width: 34px;
+      height: 34px;
+      border: 1.5px solid var(--cyan);
+      color: var(--cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border-radius: 2px;
+      text-shadow: 0 0 8px var(--cyan);
+      box-shadow: 0 0 10px rgba(0,229,255,0.15);
+    }
+
+    .section-num.green  { border-color: var(--green);   color: var(--green);   text-shadow: 0 0 8px var(--green);   box-shadow: 0 0 10px rgba(0,255,106,0.15); }
+    .section-num.magenta{ border-color: var(--magenta); color: var(--magenta); text-shadow: 0 0 8px var(--magenta); box-shadow: 0 0 10px rgba(255,0,255,0.15); }
+    .section-num.purple { border-color: var(--purple);  color: var(--purple);  text-shadow: 0 0 8px var(--purple);  box-shadow: 0 0 10px rgba(191,95,255,0.15); }
+    .section-num.white  { border-color: #fff;           color: #fff;           text-shadow: 0 0 8px #fff;           box-shadow: 0 0 10px rgba(255,255,255,0.1); }
+
+    .section-title-wrap { flex: 1; }
+
+    .section-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+      line-height: 1.6;
+      color: #fff;
+    }
+
+    .section-meta { font-size: 12px; color: var(--muted); margin-top: 5px; }
+
+    .chevron { color: var(--muted); font-size: 14px; transition: transform .22s; flex-shrink: 0; }
+    .section.open .chevron { transform: rotate(180deg); }
+
+    .section-body { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
+    .section.open .section-body { max-height: 5000px; }
+
+    .section-inner {
+      padding: 4px 22px 28px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      background: var(--surface);
+    }
+
+    /* ── TIMELINE ── */
+    .timeline { display: flex; flex-direction: column; margin-top: 20px; }
+
+    .tl-item {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 0 20px;
+    }
+
+    .tl-item:not(:last-child) .tl-right { padding-bottom: 28px; }
+
+    .tl-left { padding-top: 3px; text-align: right; }
+
+    .tl-day {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      color: var(--cyan);
+      text-shadow: 0 0 8px var(--cyan);
+      line-height: 1.5;
+    }
+
+    .tl-sublabel { font-size: 10px; color: var(--muted); margin-top: 3px; }
+
+    .tl-right {
+      position: relative;
+      padding-left: 6px;
+    }
+
+    .tl-right::before {
+      content: '';
+      position: absolute;
+      left: -11px;
+      top: 8px;
+      bottom: -20px;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--cyan), transparent);
+      opacity: 0.3;
+    }
+
+    .tl-item:last-child .tl-right::before { display: none; }
+
+    .tl-dot {
+      position: absolute;
+      left: -15px;
+      top: 6px;
+      width: 8px;
+      height: 8px;
+      border-radius: 0;
+      background: var(--cyan);
+      box-shadow: 0 0 10px var(--cyan), 0 0 20px rgba(0,229,255,0.5);
+    }
+
+    .tl-item.fire .tl-day   { color: var(--green); text-shadow: 0 0 8px var(--green); }
+    .tl-item.fire .tl-dot   { background: var(--green); box-shadow: 0 0 10px var(--green), 0 0 20px rgba(0,255,106,0.5); }
+    .tl-item.fire .tl-quote { border-left-color: var(--green); }
+
+    .tl-heading { font-size: 13px; font-weight: 700; margin-bottom: 5px; color: #fff; }
+    .tl-body    { font-size: 13px; color: var(--soft); line-height: 1.65; }
+
+    .tl-quote {
+      margin-top: 10px;
+      background: #050505;
+      border-left: 2px solid var(--cyan);
+      padding: 10px 14px;
+      font-size: 12px;
+      color: var(--cyan);
+      font-style: italic;
+      font-family: monospace;
+      text-shadow: 0 0 6px rgba(0,229,255,0.4);
+      border-radius: 0 4px 4px 0;
+    }
+
+    /* ── CARDS ── */
+    .card-grid { display: grid; gap: 10px; margin-top: 20px; }
+    .card-grid.col2 { grid-template-columns: 1fr 1fr; }
+    .card-grid.col3 { grid-template-columns: 1fr 1fr 1fr; }
+
+    @media (max-width: 560px) {
+      .card-grid.col2,
+      .card-grid.col3 { grid-template-columns: 1fr; }
+      .tl-item { grid-template-columns: 68px 1fr; }
+      .mockup-wrap { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: #050505;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 4px;
+      padding: 16px 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      opacity: 0.4;
+    }
+
+    .card-num {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+
+    .card-num.cyan    { color: var(--cyan);    text-shadow: 0 0 12px var(--cyan); }
+    .card-num.green   { color: var(--green);   text-shadow: 0 0 12px var(--green); }
+    .card-num.magenta { color: var(--magenta); text-shadow: 0 0 12px var(--magenta); }
+    .card-num.purple  { color: var(--purple);  text-shadow: 0 0 12px var(--purple); }
+
+    .card-title { font-size: 12px; font-weight: 700; margin-bottom: 6px; color: #fff; }
+    .card-body  { font-size: 12px; color: var(--soft); line-height: 1.6; }
+
+    /* ── POINT LIST ── */
+    .point-list { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
+
+    .point { display: flex; gap: 12px; align-items: flex-start; }
+
+    .point-dot {
+      width: 6px; height: 6px;
+      background: var(--cyan);
+      margin-top: 8px;
+      flex-shrink: 0;
+      box-shadow: 0 0 8px var(--cyan);
+    }
+
+    .point-text { font-size: 13px; color: var(--soft); line-height: 1.65; }
+    .point-text strong { color: #fff; display: block; margin-bottom: 3px; }
+
+    /* ── COST TABLE ── */
+    .cost-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 20px; }
+
+    .cost-table th {
+      text-align: left;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 7px;
+      letter-spacing: .08em;
+      color: var(--muted);
+      padding: 0 14px 14px 0;
+      border-bottom: 1px solid rgba(0,229,255,0.2);
+    }
+
+    .cost-table td {
+      padding: 11px 14px 11px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      color: var(--soft);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .cost-table td:first-child { color: #fff; font-weight: 600; }
+    .cost-table td:last-child  { color: var(--cyan); font-weight: 700; white-space: nowrap; text-shadow: 0 0 8px rgba(0,229,255,0.4); }
+
+    .cost-table tr.total td {
+      border-top: 1px solid rgba(0,229,255,0.2);
+      border-bottom: none;
+      padding-top: 16px;
+      color: var(--green);
+      font-weight: 700;
+      font-size: 13px;
+      text-shadow: 0 0 8px rgba(0,255,106,0.4);
+    }
+
+    /* ── CALLOUT ── */
+    .callout {
+      background: #050505;
+      border-left: 2px solid var(--cyan);
+      padding: 14px 18px;
+      font-size: 13px;
+      color: var(--soft);
+      line-height: 1.65;
+      margin-top: 20px;
+      border-radius: 0 4px 4px 0;
+      box-shadow: inset 2px 0 12px rgba(0,229,255,0.05);
+    }
+
+    .callout strong { color: #fff; }
+
+    /* ── SOCIAL MOCKUPS ── */
+    .mockup-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 20px; }
+
+    .mockup {
+      background: #050505;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .mockup::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, var(--magenta), var(--cyan), var(--green));
+      opacity: 0.7;
+    }
+
+    .mockup-header {
+      background: #0a0a0a;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .mockup-avatar {
+      width: 26px; height: 26px;
+      border-radius: 2px;
+      background: linear-gradient(135deg, var(--magenta), var(--cyan), var(--green));
+      flex-shrink: 0;
+    }
+
+    .mockup-handle { font-size: 11px; font-weight: 700; color: #fff; }
+
+    .mockup-platform {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 7px;
+      color: var(--muted);
+      margin-left: auto;
+    }
+
+    .mockup-visual {
+      background: #000;
+      aspect-ratio: 9/5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      text-align: center;
+      flex-direction: column;
+      gap: 5px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .vis-line1 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 7px;
+      letter-spacing: .1em;
+      color: var(--muted);
+    }
+
+    .vis-main {
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(9px, 2vw, 13px);
+      color: #fff;
+      line-height: 1.5;
+      text-shadow: 0 0 20px rgba(0,229,255,0.5), 2px 0 0 var(--magenta), -1px 0 0 var(--cyan);
+    }
+
+    .vis-sub { font-size: 11px; color: var(--soft); margin-top: 2px; }
+
+    .vis-dot { width: 5px; height: 5px; background: var(--cyan); margin: 5px auto 0; box-shadow: 0 0 8px var(--cyan); }
+
+    .mockup-caption { padding: 12px 14px; }
+    .cap-handle { font-size: 11px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .cap-text   { font-size: 11px; color: var(--soft); line-height: 1.55; }
+    .cap-tags   { font-size: 11px; color: var(--cyan); margin-top: 4px; opacity: 0.8; }
+    .cap-meta   {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 7px;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    /* ── SCANLINE OVERLAY ── */
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.03) 2px,
+        rgba(0,0,0,0.03) 4px
+      );
+      pointer-events: none;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="scanlines"></div>
+
+  <div class="doc">
+
+    <div class="label">// Campaign Concept: Soundmap</div>
+    <h1 class="doc-title">The 7-Day Drop</h1>
+    <p class="doc-sub">A multi-city simultaneous ticket drop built on location, badge tier, and the tension of a random window. Scales from one artist to a full touring strategy.</p>
+
+    <!-- HERO -->
+    <div class="hero-callout">
+      <div class="hc-label">// Core Idea</div>
+      <h2>Connecting the game<br>to the real world</h2>
+      <p>Everything inside Soundmap (badges, trades, collections) is a game. The drop mechanic is what makes that game matter in the real world. <strong>A single ticket to the right event can drive an insane number of players onto the platform.</strong></p>
+      <p>Think about a BTS comeback tour. Tickets sell out in minutes. Resale hits $1,000+. Millions of fans have zero realistic path to a ticket. Soundmap becomes that path, but only if you've been playing. That changes the entire value proposition of the app. It's not just a music collector game anymore. <strong>It's your best shot at a ticket that doesn't exist anywhere else.</strong></p>
+      <p>The higher the demand for the ticket, the more powerful the mechanic. One pair of BTS tickets in a city drives more installs and more engagement than any ad campaign at the same cost. And because access is tied to badge tier (earned through real activity), every player who grinds for eligibility becomes a more engaged, more retained user by the time the drop fires.</p>
+      <div class="hc-examples">
+        <div class="hc-pill">BTS Comeback</div>
+        <div class="hc-pill">Taylor Swift</div>
+        <div class="hc-pill">Travis Scott</div>
+        <div class="hc-pill">Beyoncé</div>
+        <div class="hc-pill">Sold-out anything</div>
+      </div>
+    </div>
+
+    <!-- SECTION 1 -->
+    <div class="section open">
+      <button class="section-toggle">
+        <div class="section-num">1</div>
+        <div class="section-title-wrap">
+          <div class="section-title">The 7-Day Arc</div>
+          <div class="section-meta">How the campaign runs day by day</div>
+        </div>
+        <div class="chevron">⌄</div>
+      </button>
+      <div class="section-body">
+        <div class="section-inner">
+          <div class="timeline">
+
+            <div class="tl-item">
+              <div class="tl-left">
+                <div class="tl-day">Day 7</div>
+                <div class="tl-sublabel">Announce</div>
+              </div>
+              <div class="tl-right">
+                <div class="tl-dot"></div>
+                <div class="tl-heading">Multi-city announcement across all socials + push</div>
+                <div class="tl-body">Every user within 50 miles of a sold-out venue in each city. Name the artist. Name all three cities dropping simultaneously. Don't reveal the time. The multi-city angle is what makes it feel like a real event rather than a giveaway.</div>
+                <div class="tl-quote">"Next Saturday. [Artist]. Chicago. LA. Atlanta. One drop. All three cities. Stay ready."</div>
+              </div>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-left">
+                <div class="tl-day">Day 5</div>
+                <div class="tl-sublabel">Badge push</div>
+              </div>
+              <div class="tl-right">
+                <div class="tl-dot"></div>
+                <div class="tl-heading">Badge tier content: Platinum and above are ticket-eligible</div>
+                <div class="tl-body">Fans sitting at Gold who are 10 songs away from Platinum will grind hard to get there. Trading volume across all three cities spikes. That's the mechanic working exactly as intended. And it doesn't stop at Platinum. Diamond and Legendary badge holders get a slightly higher pull weight on the drop. Getting in the door is Platinum. Improving your odds is everything above it. Every tier has a reason to keep grinding.</div>
+              </div>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-left">
+                <div class="tl-day">Day 3</div>
+                <div class="tl-sublabel">Proximity</div>
+              </div>
+              <div class="tl-right">
+                <div class="tl-dot"></div>
+                <div class="tl-heading">In-range users get a personal confirmation</div>
+                <div class="tl-body">Simple and practical. You're eligible. Notifications on. That's it.</div>
+                <div class="tl-quote">"You're in range for the drop. Turn notifications on. We'll handle the rest."</div>
+              </div>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-left">
+                <div class="tl-day">Day 1</div>
+                <div class="tl-sublabel">Eve</div>
+              </div>
+              <div class="tl-right">
+                <div class="tl-dot"></div>
+                <div class="tl-heading">One line. No fluff.</div>
+                <div class="tl-quote">"Tomorrow. Three cities. Random window. Normal hours. Be ready."</div>
+              </div>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-left">
+                <div class="tl-day">Day of</div>
+                <div class="tl-sublabel">Morning</div>
+              </div>
+              <div class="tl-right">
+                <div class="tl-dot"></div>
+                <div class="tl-heading">Morning push confirms today, with each user's badge status</div>
+                <div class="tl-body">Somewhere between 10am and 10pm local time. Below Platinum is a nudge. Still time to trade up. Platinum or above gets a green light. Then silence until the drop fires.</div>
+              </div>
+            </div>
+
+            <div class="tl-item fire">
+              <div class="tl-left">
+                <div class="tl-day">DROP</div>
+                <div class="tl-sublabel">The moment</div>
+              </div>
+              <div class="tl-right">
+                <div class="tl-dot"></div>
+                <div class="tl-heading">Every user in range across all three cities hit simultaneously</div>
+                <div class="tl-body">Notification names the artist, rarity tier, time remaining, and confirms ticket eligibility. Thirty minutes. Enough time to actually respond like a human, not enough time to forget about it. All Platinum+ users are eligible, but Diamond and Legendary badge holders carry a slightly higher pull weight. The floor gets you in. The grind improves your odds.</div>
+                <div class="tl-quote">"[Artist] drop is live. Legendary tier. 30 minutes. Platinum+ only. Tap now."</div>
+              </div>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-left">
+                <div class="tl-day">+1 hr</div>
+                <div class="tl-sublabel">Winners</div>
+              </div>
+              <div class="tl-right">
+                <div class="tl-dot"></div>
+                <div class="tl-heading">Winners announced across all cities in one post</div>
+                <div class="tl-body">Three cities in one post. That's the proof-of-scale moment that makes the next event feel even bigger.</div>
+                <div class="tl-quote">"A Platinum holder in Chicago, a Diamond in LA, and a Legendary in Atlanta just won tonight."</div>
+              </div>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-left">
+                <div class="tl-day">Day +1</div>
+                <div class="tl-sublabel">Loop</div>
+              </div>
+              <div class="tl-right">
+                <div class="tl-dot"></div>
+                <div class="tl-heading">Three winners. Three shows. Three cities. One story.</div>
+                <div class="tl-body">Repost all of it. The story isn't "someone won" - it's "Soundmap lit up three cities last night." Three winners posting from three different shows on the same night is a completely different content moment than one winner in one city. That's what gets shared beyond your existing user base.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION: LEGENDARY MOMENT -->
+    <div class="section open" style="border-color: rgba(191,95,255,0.25);">
+      <button class="section-toggle" style="background: #080508;">
+        <div class="section-num purple" style="border-color:var(--purple);color:var(--purple);">★</div>
+        <div class="section-title-wrap">
+          <div class="section-title" style="background: linear-gradient(90deg,var(--magenta),var(--cyan),var(--purple)); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">The Legendary Moment</div>
+          <div class="section-meta">The concert becomes a one-of-one collectible, forever</div>
+        </div>
+        <div class="chevron">⌄</div>
+      </button>
+      <div class="section-body">
+        <div class="section-inner" style="background:#080508;">
+
+          <!-- MOMENT CARD -->
+          <div style="position:relative; margin-top:20px; background:#000; border:1px solid rgba(191,95,255,0.3); border-radius:6px; padding:28px; overflow:hidden;">
+            <!-- holo border animation -->
+            <div style="position:absolute;inset:0;border-radius:6px;padding:1px;background:linear-gradient(135deg,var(--purple),var(--cyan),var(--magenta),var(--green),var(--purple));background-size:300% 300%;animation:holo 3s linear infinite;-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;"></div>
+
+            <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--purple);text-shadow:0 0 10px var(--purple);margin-bottom:14px;letter-spacing:.1em;">// ONE OF ONE</div>
+            <div style="font-family:'Press Start 2P',monospace;font-size:clamp(11px,2vw,16px);color:#fff;line-height:1.6;margin-bottom:6px;text-shadow:2px 0 0 var(--magenta),-1px 0 0 var(--cyan),0 0 30px rgba(191,95,255,0.5);">[Artist Name]<br>Live in Chicago</div>
+            <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--muted);margin-bottom:18px;">March 14, 2025 · United Center · Sec 108 Row 12</div>
+            <div style="font-size:12px;color:var(--soft);line-height:1.7;border-left:2px solid var(--purple);padding-left:14px;font-style:italic;">
+              "I was there. This moment is mine. No one else has this."
+            </div>
+          </div>
+
+          <!-- THE LOOP -->
+          <div style="margin-top:28px;" class="point-list">
+            <div class="point">
+              <div class="point-dot" style="background:var(--magenta);box-shadow:0 0 8px var(--magenta);"></div>
+              <div class="point-text">
+                <strong>The winner gets a shareable winner card. Going public is opt-in.</strong>
+                They get a DM with a pre-built card: their username, badge tier, city, artist. It's designed to be posted. You don't announce them. You give them the content and let them announce themselves. The ones who post it do it louder than Soundmap ever could. The ones who don't, still get the full experience. No one gets put on blast without choosing to be.
+              </div>
+            </div>
+            <div class="point">
+              <div class="point-dot" style="background:var(--purple);box-shadow:0 0 8px var(--purple);"></div>
+              <div class="point-text">
+                <strong>They attend the concert. Soundmap knows they're there</strong>
+                Location check-in or a simple scan/code at the venue confirms attendance. This isn't just about verification. It's the trigger. The moment the show ends, something unlocks in their collection that only they can ever have.
+              </div>
+            </div>
+            <div class="point">
+              <div class="point-dot" style="background:var(--cyan);box-shadow:0 0 8px var(--cyan);"></div>
+              <div class="point-text">
+                <strong>After the show, the Legendary Moment unlocks in their collection</strong>
+                Not a ticket stub. Not an NFT. A profile collectible: the artist, the exact venue, the exact date, their badge tier at the time, permanently stamped to their Soundmap profile. Nobody else was at that show at that tier. It's theirs and only theirs. The drop mechanic retroactively becomes the whole point. Winning the tickets was always going to lead to this.
+              </div>
+            </div>
+            <div class="point">
+              <div class="point-dot" style="background:var(--green);box-shadow:0 0 8px var(--green);"></div>
+              <div class="point-text">
+                <strong>They share the Moment and the loop closes</strong>
+                "I won the tickets through Soundmap. I went to the show. Now I have a Legendary Moment in my collection that nobody else has." That's three separate sharing moments: winning, attending, and owning. Each one drives installs from people who weren't part of it but want to be next time.
+              </div>
+            </div>
+          </div>
+
+          <!-- WHY THIS MATTERS -->
+          <div style="margin-top:24px;background:#000;border-radius:4px;padding:20px 22px;border:1px solid rgba(255,255,255,0.05);">
+            <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--green);text-shadow:0 0 8px var(--green);margin-bottom:12px;letter-spacing:.08em;">// Why this is different</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div>
+                <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;text-decoration:line-through;">Old model</div>
+                <div style="font-size:12px;color:var(--muted);line-height:1.6;">Win ticket giveaway → go to show → nothing. The moment is gone. No artifact. No record. No reason to talk about the app again.</div>
+              </div>
+              <div>
+                <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px;text-shadow:0 0 6px var(--green);">Soundmap model</div>
+                <div style="font-size:12px;color:var(--soft);line-height:1.6;">Win ticket through gameplay → get a shareable winner card to post if you want → attend the show → Legendary Moment unlocks to your profile permanently → share it forever. The concert doesn't end. It becomes part of your collection.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout" style="border-left-color:var(--purple);box-shadow:inset 2px 0 12px rgba(191,95,255,0.08);">
+            <strong>The bigger point:</strong> Every other ticket giveaway ends at the door. This one starts there. The Legendary Moment makes Soundmap the only platform where going to a concert makes you more valuable as a player - and gives you something worth sharing that lives in the app forever.
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="section">
+      <button class="section-toggle">
+        <div class="section-num green">2</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Artist Management Angle</div>
+          <div class="section-meta">How the relationship with management evolves</div>
+        </div>
+        <div class="chevron">⌄</div>
+      </button>
+      <div class="section-body">
+        <div class="section-inner">
+          <div class="point-list">
+            <div class="point">
+              <div class="point-dot"></div>
+              <div class="point-text">
+                <strong>Phase 1: Buy or comp face-value tickets yourself</strong>
+                Keep costs tight. One or two pairs per city tied to venue size. A 3,000-cap theater gets one pair. A 10,000-cap gets two. Never spending much per event. Just proving the mechanic works.
+              </div>
+            </div>
+            <div class="point">
+              <div class="point-dot"></div>
+              <div class="point-text">
+                <strong>Phase 2: Go to management with documented outcomes</strong>
+                Screenshots of winners at shows. Engagement numbers from drops. New installs driven by the campaign. The conversation shifts from "can we have comp tickets" to a real pitch.
+              </div>
+            </div>
+            <div class="point">
+              <div class="point-dot"></div>
+              <div class="point-text">
+                <strong>The pitch</strong>
+                "Your sold-out tour just drove thousands of your fans to spend a week grinding on an app, trading your songs, and recruiting their friends to be in range for the drop." That's fan engagement data management teams don't get from Spotify or Instagram. You're not asking for tickets. You're offering a superfan activation campaign and the tickets are just the mechanism.
+              </div>
+            </div>
+            <div class="point">
+              <div class="point-dot"></div>
+              <div class="point-text">
+                <strong>Who to target first</strong>
+                Artists with passionate collector-type fanbases. The kind of fans who buy every vinyl variant and every merch drop. Those management teams already understand that superfans behave differently and are receptive to anything that identifies and rewards them.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION: BEREAL REFERENCE -->
+    <div class="section">
+      <button class="section-toggle">
+        <div class="section-num" style="border-color:#e8e8e8;color:#e8e8e8;font-size:8px;">BR</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Competitive Reference: BeReal</div>
+          <div class="section-meta">73M+ downloads · $800M acquisition · zero paid ads</div>
+        </div>
+        <div class="chevron">⌄</div>
+      </button>
+      <div class="section-body">
+        <div class="section-inner">
+
+          <!-- STATS -->
+          <div class="card-grid col3" style="margin-top:20px;">
+            <div class="card">
+              <div class="card-num cyan">2020</div>
+              <div class="card-title">Founded in Paris</div>
+              <div class="card-body">Zero ad spend from day one. The product was the only channel.</div>
+            </div>
+            <div class="card">
+              <div class="card-num green">73M+</div>
+              <div class="card-title">Peak downloads (2022)</div>
+              <div class="card-body">Reached #1 on the App Store globally with no influencer deals and no paid advertising.</div>
+            </div>
+            <div class="card">
+              <div class="card-num magenta">$800M</div>
+              <div class="card-title">Acquired by Voodoo (2024)</div>
+              <div class="card-body">Bought by a French mobile game company after retention issues and feature drift killed momentum.</div>
+            </div>
+          </div>
+
+          <!-- PHASES -->
+          <div style="margin-top:28px;display:flex;flex-direction:column;gap:14px;">
+
+            <div style="background:#050505;border:1px solid rgba(255,255,255,0.05);border-radius:4px;padding:18px 20px;">
+              <div style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--muted);margin-bottom:6px;letter-spacing:.08em;">Phase 1 · 2020–2021 · Zero budget</div>
+              <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:8px;">Campus ambassador infiltration</div>
+              <div style="font-size:13px;color:var(--soft);line-height:1.65;margin-bottom:12px;">Co-founder Alexis Barreyat personally recruited campus ambassadors at French universities, offering equity or early access instead of pay. Reps would post a single BeReal, then go silent. Scarcity created curiosity. The app stayed invite-only, borrowing the psychological playbook of Clubhouse and Gmail. No press releases, no influencer deals.</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                <span style="font-size:11px;padding:3px 10px;border-radius:2px;border:1px solid rgba(0,229,255,0.2);color:var(--cyan);">Invite-only</span>
+                <span style="font-size:11px;padding:3px 10px;border-radius:2px;border:1px solid rgba(0,229,255,0.2);color:var(--cyan);">Campus reps</span>
+                <span style="font-size:11px;padding:3px 10px;border-radius:2px;border:1px solid rgba(0,229,255,0.2);color:var(--cyan);">Zero ad spend</span>
+                <span style="font-size:11px;padding:3px 10px;border-radius:2px;border:1px solid rgba(0,229,255,0.2);color:var(--cyan);">Organic only</span>
+              </div>
+            </div>
+
+            <div style="background:#050505;border:1px solid rgba(255,255,255,0.05);border-radius:4px;padding:18px 20px;">
+              <div style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--muted);margin-bottom:6px;letter-spacing:.08em;">Phase 2 · Late 2021–Early 2022 · Peer-to-peer ignition</div>
+              <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:8px;">The university flywheel</div>
+              <div style="font-size:13px;color:var(--soft);line-height:1.65;margin-bottom:12px;">Targeted US college campuses with a two-step: seed a small cohort of highly social students, then let network effects do the work. Climbed to #1 at Arizona State, Michigan, and USC before any national presence. Each campus felt like it discovered BeReal on its own. Students recruited their friends because the app only worked if your friend group used it. The mechanism was social obligation, not advertising.</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                <span style="font-size:11px;padding:3px 10px;border-radius:2px;border:1px solid rgba(0,255,106,0.2);color:var(--green);">Network effects</span>
+                <span style="font-size:11px;padding:3px 10px;border-radius:2px;border:1px solid rgba(0,255,106,0.2);color:var(--green);">Bottom-up growth</span>
+                <span style="font-size:11px;padding:3px 10px;border-radius:2px;border:1px solid rgba(0,255,106,0.2);color:var(--green);">Gen Z focus</span>
+              </div>
+            </div>
+
+            <div style="background:#050505;border:1px solid rgba(255,255,255,0.05);border-radius:4px;padding:18px 20px;">
+              <div style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--muted);margin-bottom:6px;letter-spacing:.08em;">Phase 3 · Mid 2022 · Cultural moment</div>
+              <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:8px;">Mainstream breakout without paid media</div>
+              <div style="font-size:13px;color:var(--soft);line-height:1.65;margin-bottom:12px;">By July 2022, BeReal hit 10M daily active users and reached #1 globally, with no influencer deals and no paid advertising. Growth was almost entirely driven by TikTok users posting about BeReal organically (often complaining they were "late to post"), which became free cross-promotion. Media coverage followed growth, not the other way around. Vox, NYT, and The Verge all wrote explainers after the surge, accelerating it further.</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                <span style="font-size:11px;padding:3px 10px;border-radius:2px;border:1px solid rgba(191,95,255,0.2);color:var(--purple);">TikTok spillover</span>
+                <span style="font-size:11px;padding:3px 10px;border-radius:2px;border:1px solid rgba(191,95,255,0.2);color:var(--purple);">Press amplification</span>
+                <span style="font-size:11px;padding:3px 10px;border-radius:2px;border:1px solid rgba(191,95,255,0.2);color:var(--purple);">Word of mouth</span>
+                <span style="font-size:11px;padding:3px 10px;border-radius:2px;border:1px solid rgba(191,95,255,0.2);color:var(--purple);">10M DAU</span>
+              </div>
+            </div>
+
+            <div style="background:#050505;border:1px solid rgba(255,255,255,0.05);border-radius:4px;padding:18px 20px;opacity:0.7;">
+              <div style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--muted);margin-bottom:6px;letter-spacing:.08em;">2023–2025 · Where it went wrong</div>
+              <div style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:8px;text-decoration:line-through;">Decline, pivot, and acquisition</div>
+              <div style="font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:12px;">Retention was weak. Once novelty wore off, daily posting felt like a chore. BeReal introduced a public discovery feed, a celebrities tab, brand accounts, and sponsored RealMojis. These contradicted the core identity and failed to move the needle. Acquired by Voodoo in early 2024 for $800M. Repositioned toward ads and monetization.</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                <span style="font-size:11px;padding:3px 10px;border-radius:2px;border:1px solid rgba(100,100,100,0.3);color:var(--muted);">Feature drift</span>
+                <span style="font-size:11px;padding:3px 10px;border-radius:2px;border:1px solid rgba(100,100,100,0.3);color:var(--muted);">Retention struggles</span>
+                <span style="font-size:11px;padding:3px 10px;border-radius:2px;border:1px solid rgba(100,100,100,0.3);color:var(--muted);">Identity loss</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- THE FOMO MECHANIC - LEAD POINT -->
+          <div style="margin-top:20px;position:relative;background:#000;border:1px solid rgba(0,229,255,0.2);border-radius:4px;padding:22px 22px;overflow:hidden;">
+            <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0.5;"></div>
+            <div style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--cyan);text-shadow:0 0 8px var(--cyan);margin-bottom:12px;letter-spacing:.08em;">// The only thing worth copying</div>
+            <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.4;">BeReal's 2-minute window was engineered FOMO, not a feature</div>
+            <div style="font-size:13px;color:var(--soft);line-height:1.7;margin-bottom:14px;">It fired simultaneously for every user, once a day, with no warning. <strong style="color:#fff;">Missing it meant you weren't real. Completing it meant you had proof.</strong> That proof was shareable. The window wasn't a UX decision. It was the entire distribution strategy disguised as a product rule.</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px;">
+              <div style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.05);border-radius:4px;padding:14px;">
+                <div style="font-size:11px;font-weight:700;color:var(--cyan);margin-bottom:6px;">BeReal's FOMO loop</div>
+                <div style="font-size:12px;color:var(--soft);line-height:1.6;">Notification fires → 2 minutes → miss it and feel behind → catch it and feel authentic → post it → friends see it → they download → loop repeats</div>
+              </div>
+              <div style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.05);border-radius:4px;padding:14px;">
+                <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:6px;">Soundmap's FOMO loop</div>
+                <div style="font-size:12px;color:var(--soft);line-height:1.6;">Drop fires → 30 minutes → miss it because your badge was too low → watch someone else win → grind to Platinum → next drop you're ready → loop repeats</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SOUNDMAP PARALLEL -->
+          <div class="callout" style="border-left-color:var(--cyan);">
+            <strong>The key difference:</strong> BeReal's FOMO ended the moment the window closed. There was nothing to show for it the next day. Soundmap's FOMO compounds. Miss the drop, you grind harder. Win the drop, you get a Legendary Moment that sits on your profile forever and makes the next person want it even more. BeReal taught us that engineered urgency works. Soundmap makes it permanent.
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="section">
+      <button class="section-toggle">
+        <div class="section-num magenta">3</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Estimated Costs</div>
+          <div class="section-meta">Per 3-city drop · early stage</div>
+        </div>
+        <div class="chevron">⌄</div>
+      </button>
+      <div class="section-body">
+        <div class="section-inner">
+          <table class="cost-table">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Notes</th>
+                <th>Est. Cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Tickets, small venue (3k cap)</td>
+                <td>1 pair per city × 3 cities, face value ~$60–120/ticket</td>
+                <td>$360–$720</td>
+              </tr>
+              <tr>
+                <td>Tickets, medium venue (10k cap)</td>
+                <td>2 pairs per city × 3 cities, face value ~$80–150/ticket</td>
+                <td>$960–$1,800</td>
+              </tr>
+              <tr>
+                <td>High-demand event (BTS, Taylor, etc.)</td>
+                <td>1 pair total. Face value if available, or comp via management deal</td>
+                <td>$200–$600 · $0 if comp</td>
+              </tr>
+              <tr>
+                <td>Push notification infrastructure</td>
+                <td>OneSignal free tier covers ~10k subscribers. Paid ~$99/mo</td>
+                <td>$0–$99/mo</td>
+              </tr>
+              <tr>
+                <td>Social content production</td>
+                <td>Organic posts only. Canva / design time. No paid spend needed early.</td>
+                <td>$0–$200</td>
+              </tr>
+              <tr>
+                <td>Creator seeding (optional)</td>
+                <td>1–2 micro creators per city to amplify. $100–300/post.</td>
+                <td>$300–$900</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="total">
+                <td>Total per 3-city event</td>
+                <td>Early stage · no paid ads · face-value tickets</td>
+                <td>$660–$2,700</td>
+              </tr>
+            </tfoot>
+          </table>
+          <div class="callout">
+            <strong>Key point:</strong> Cost stays low because you're manufacturing reach through tension and mechanics - not buying it. With a high-demand ticket (BTS, Beyoncé), a single pair drives more installs than most paid campaigns at 10× the budget.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="section">
+      <button class="section-toggle">
+        <div class="section-num purple">4</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Estimated Outreach</div>
+          <div class="section-meta">What one campaign event actually touches</div>
+        </div>
+        <div class="chevron">⌄</div>
+      </button>
+      <div class="section-body">
+        <div class="section-inner">
+          <div class="card-grid col3">
+            <div class="card">
+              <div class="card-num cyan">50mi</div>
+              <div class="card-title">Geo push radius</div>
+              <div class="card-body">Every Soundmap user within 50 miles of a sold-out venue in each city gets the push.</div>
+            </div>
+            <div class="card">
+              <div class="card-num green">3×</div>
+              <div class="card-title">Simultaneous cities</div>
+              <div class="card-body">Chicago, LA, and Atlanta firing at the same moment multiplies perceived scale instantly.</div>
+            </div>
+            <div class="card">
+              <div class="card-num magenta">7</div>
+              <div class="card-title">Organic touchpoints</div>
+              <div class="card-body">Announcement · badge post · proximity push · eve push · morning push · drop · winner post. All earned.</div>
+            </div>
+          </div>
+          <div class="card-grid col2">
+            <div class="card">
+              <div class="card-title">Trading volume spike (Days 5–7)</div>
+              <div class="card-body">Badge eligibility drives Gold-tier users to trade actively for 2–3 days before the drop. Organic platform engagement created entirely as a side effect of the campaign.</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Post-drop content loop</div>
+              <div class="card-body">Three winner posts, three cities, same night. "App lit up three cities" is a story that reaches people who've never heard of Soundmap.</div>
+            </div>
+            <div class="card">
+              <div class="card-title">New installs from FOMO</div>
+              <div class="card-body">Non-users who hear about the drop install to be eligible for the next one. Each campaign is its own acquisition event.</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Artist fanbase crossover</div>
+              <div class="card-body">A passive mention from an artist with 500k followers is a meaningful acquisition moment with zero paid spend.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 5 -->
+    <div class="section">
+      <button class="section-toggle">
+        <div class="section-num white">5</div>
+        <div class="section-title-wrap">
+          <div class="section-title">What the Posts Look Like</div>
+          <div class="section-meta">4 mockups across the campaign arc</div>
+        </div>
+        <div class="chevron">⌄</div>
+      </button>
+      <div class="section-body">
+        <div class="section-inner">
+          <div class="mockup-wrap">
+
+            <div class="mockup">
+              <div class="mockup-header">
+                <div class="mockup-avatar"></div>
+                <div class="mockup-handle">@soundmap</div>
+                <div class="mockup-platform">TikTok/IG</div>
+              </div>
+              <div class="mockup-visual">
+                <div class="vis-line1">Next Saturday</div>
+                <div class="vis-main">CHI · LA · ATL</div>
+                <div class="vis-sub">One drop. All three cities.</div>
+                <div class="vis-dot"></div>
+              </div>
+              <div class="mockup-caption">
+                <div class="cap-handle">soundmap</div>
+                <div class="cap-text">Dropping in three cities at once next Saturday. One artist. One window. Platinum badge or above to enter.</div>
+                <div class="cap-tags">#Soundmap #MusicDrop</div>
+                <div class="cap-meta">Day 7 · Announcement</div>
+              </div>
+            </div>
+
+            <div class="mockup">
+              <div class="mockup-header">
+                <div class="mockup-avatar"></div>
+                <div class="mockup-handle">@soundmap</div>
+                <div class="mockup-platform">TikTok/IG</div>
+              </div>
+              <div class="mockup-visual">
+                <div class="vis-line1">Ticket eligible</div>
+                <div class="vis-main">Platinum+</div>
+                <div class="vis-sub">5 days left to trade up</div>
+                <div class="vis-dot"></div>
+              </div>
+              <div class="mockup-caption">
+                <div class="cap-handle">soundmap</div>
+                <div class="cap-text">Platinum or above gets you in the drop this Saturday. At Gold right now? You have 5 days.</div>
+                <div class="cap-tags">#Soundmap #BadgeTier</div>
+                <div class="cap-meta">Day 5 · Badge eligibility</div>
+              </div>
+            </div>
+
+            <div class="mockup">
+              <div class="mockup-header">
+                <div class="mockup-avatar"></div>
+                <div class="mockup-handle">@soundmap</div>
+                <div class="mockup-platform">Story/IG</div>
+              </div>
+              <div class="mockup-visual" style="background:#000;">
+                <div class="vis-line1" style="color:var(--green);text-shadow:0 0 8px var(--green);">Drop is live</div>
+                <div class="vis-main" style="text-shadow: 0 0 20px rgba(0,255,106,0.6), 2px 0 0 var(--magenta);">[Artist Name]</div>
+                <div class="vis-sub" style="color:var(--green);">30 min · Platinum+ · 3 cities</div>
+                <div class="vis-dot" style="background:var(--green);box-shadow:0 0 10px var(--green);"></div>
+              </div>
+              <div class="mockup-caption">
+                <div class="cap-handle">soundmap</div>
+                <div class="cap-text">It's live. Chicago. LA. Atlanta. Right now. 30 minutes.</div>
+                <div class="cap-tags">#Soundmap #LiveDrop</div>
+                <div class="cap-meta">Day of · Drop fires</div>
+              </div>
+            </div>
+
+            <div class="mockup">
+              <div class="mockup-header">
+                <div class="mockup-avatar"></div>
+                <div class="mockup-handle">@soundmap</div>
+                <div class="mockup-platform">TikTok/IG</div>
+              </div>
+              <div class="mockup-visual">
+                <div class="vis-line1">Tonight's winners</div>
+                <div class="vis-main">3 cities · 1 night</div>
+                <div class="vis-sub">Platinum · Diamond · Legendary</div>
+                <div class="vis-dot"></div>
+              </div>
+              <div class="mockup-caption">
+                <div class="cap-handle">soundmap</div>
+                <div class="cap-text">A Platinum in Chicago, a Diamond in LA, and a Legendary in Atlanta just won. Three cities. Same drop. Same moment. Next one's coming.</div>
+                <div class="cap-tags">#Soundmap #Winners</div>
+                <div class="cap-meta">+1hr · Winner announcement</div>
+              </div>
+            </div>
+
+          </div>
+          <div class="callout">
+            <strong>Content principle:</strong> Every post in this arc is short, specific, and creates urgency without being pushy. The multi-city angle does the heavy lifting. It makes every post feel like a bigger event than a single-city drop ever could.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    document.querySelectorAll('.section-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.closest('.section').classList.toggle('open');
+      });
+    });
+  </script>
+</body>
+</html>
